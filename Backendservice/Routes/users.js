@@ -5,6 +5,8 @@ const Controllers = require("../Controllers/usercontolller");
 
 router.post("/signup", isuserexist, Controllers.signup);
 
+router.post("/login", Controllers.login);
+
 async function isuserexist(req, res, next) {
   let useremail = req.body.email;
   const user = await userModle.findOne({ email: useremail });
@@ -12,7 +14,7 @@ async function isuserexist(req, res, next) {
     next();
     return;
   } else {
-    res.send("user with this Email already exist");
+    res.send({ msg: "User With This Email Already Exist", status: false });
   }
 }
 

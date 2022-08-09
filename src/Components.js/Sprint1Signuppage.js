@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import "../App.css";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Navbar from "./Navbars/Navbar";
 
 function SignupPage() {
   const [email, setemail] = useState("");
@@ -9,6 +10,8 @@ function SignupPage() {
   const [phonenumber, setphonenumber] = useState("");
   const [isemailvalid, setemailvalid] = useState("");
   const [flag, setflage] = useState(true);
+  const [response, setresponse] = useState({});
+  const navigate = useNavigate();
   useEffect(() => {
     if (
       email != "" &&
@@ -44,7 +47,6 @@ function SignupPage() {
   }
   function handlesubmit(e) {
     e.preventDefault();
-    console.log(e);
     axios
       .post(`http://localhost:3001/signup`, {
         username: username,
@@ -53,8 +55,12 @@ function SignupPage() {
         phonenumber: phonenumber,
       })
       .then((res) => {
-        window.alert(res.data);
-        window.location.reload();
+        setresponse(res.data);
+        console.log(res);
+        if (res.data.status) {
+          window.alert(res.data.msg);
+          navigate("/");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -62,117 +68,133 @@ function SignupPage() {
   }
   return (
     <div>
-      <section className="vh-100" style={{ backgroundColor: "#eee" }}>
-        <div className="container h-100">
-          <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col-lg-12 col-xl-11">
-              <div className="card text-black" style={{ borderRadius: "25px" }}>
-                <div className="card-body p-md-5">
-                  <div className="row justify-content-center">
-                    <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                      <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                        Sign up Form
-                      </p>
+      <div>
+        <Navbar></Navbar>
+        <section style={{ backgroundColor: "#84C3B3 ", height: "93vh" }}>
+          <div className="container h-100">
+            <div className="row d-flex justify-content-center align-items-center h-100">
+              <div className="col-lg-11 col-xl-11">
+                <div
+                  className="card text-black"
+                  style={{ borderRadius: "25px" }}
+                >
+                  <div className="card-body p-md-5">
+                    <div className="row justify-content-center">
+                      <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                        <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+                          Sign up Form
+                        </p>
 
-                      <form className="mx-1 mx-md-4">
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-user fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label className="form-label" htmlFor="name">
-                              Name
-                            </label>
-                            <input
-                              type="text"
-                              id="username"
-                              className="form-control"
-                              value={username}
-                              onChange={handlechange}
-                              placeholder="Enter Full Name"
-                            />
+                        <form className="mx-1 mx-md-4">
+                          <div className="d-flex flex-row align-items-center mb-4">
+                            <i className="fas fa-user fa-lg me-3 fa-fw"></i>
+                            <div className="form-outline flex-fill mb-0">
+                              <label className="form-label" htmlFor="name">
+                                Name
+                              </label>
+                              <input
+                                type="text"
+                                id="username"
+                                className="form-control"
+                                value={username}
+                                onChange={handlechange}
+                                placeholder="Enter Full Name"
+                              />
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label className="form-label" htmlFor="email">
-                              Email
-                            </label>
-                            <input
-                              type="email"
-                              id="email"
-                              className="form-control"
-                              value={email}
-                              onChange={handlechange}
-                              placeholder="Example@yaho.com"
-                            />
-                            {isemailvalid === false ? (
-                              <div>please enter a valid email</div>
-                            ) : (
-                              <div></div>
-                            )}
+                          <div className="d-flex flex-row align-items-center mb-4">
+                            <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                            <div className="form-outline flex-fill mb-0">
+                              <label className="form-label" htmlFor="email">
+                                Email
+                              </label>
+                              <input
+                                type="email"
+                                id="email"
+                                className="form-control"
+                                value={email}
+                                onChange={handlechange}
+                                placeholder="Example@yaho.com"
+                              />
+                              {isemailvalid === false ? (
+                                <div>please enter a valid email</div>
+                              ) : (
+                                <div></div>
+                              )}
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label className="form-label" htmlFor="password">
-                              Password
-                            </label>
-                            <input
-                              type="password"
-                              id="password"
-                              className="form-control"
-                              value={password}
-                              onChange={handlechange}
-                              placeholder="Minimum Password Length is 6"
-                            />
+                          <div className="d-flex flex-row align-items-center mb-4">
+                            <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+                            <div className="form-outline flex-fill mb-0">
+                              <label className="form-label" htmlFor="password">
+                                Password
+                              </label>
+                              <input
+                                type="password"
+                                id="password"
+                                className="form-control"
+                                value={password}
+                                onChange={handlechange}
+                                placeholder="Minimum Password Length is 6"
+                              />
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="d-flex flex-row align-items-center mb-4">
-                          <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                          <div className="form-outline flex-fill mb-0">
-                            <label className="form-label" htmlFor="phonenumber">
-                              Phone Number
-                            </label>
-                            <input
-                              type="text"
-                              id="phonenumber"
-                              className="form-control"
-                              value={phonenumber}
-                              onChange={handlechange}
-                              placeholder="Should Contain 10 Digits"
-                            />
+                          <div className="d-flex flex-row align-items-center mb-4">
+                            <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                            <div className="form-outline flex-fill mb-0">
+                              <label
+                                className="form-label"
+                                htmlFor="phonenumber"
+                              >
+                                Phone Number
+                              </label>
+                              <input
+                                type="text"
+                                id="phonenumber"
+                                className="form-control"
+                                value={phonenumber}
+                                onChange={handlechange}
+                                placeholder="Should Contain 10 Digits"
+                              />
+                            </div>
                           </div>
-                        </div>
-                        <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                          <button
-                            disabled={flag}
-                            type="submit"
-                            className="btn btn-primary btn-lg"
-                            onClick={(e) => handlesubmit(e)}
-                          >
-                            Register
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                    <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                      <img
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                        className="img-fluid"
-                        alt="Sample image"
-                      />
+                          <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                            <button
+                              disabled={flag}
+                              type="submit"
+                              className="btn btn-secondary btn-lg"
+                              onClick={(e) => handlesubmit(e)}
+                            >
+                              Register
+                            </button>
+                          </div>
+                          {response ? (
+                            response.status === false && (
+                              <div style={{ color: "red" }}>{response.msg}</div>
+                            )
+                          ) : (
+                            <div></div>
+                          )}
+                        </form>
+                      </div>
+                      <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                        <img
+                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                          className="img-fluid"
+                          alt="Sample image"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }
