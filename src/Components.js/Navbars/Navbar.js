@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import { Logout } from "../Authentication/auth";
 function Navbar() {
   const navigate = useNavigate();
+  let isuserlogedin = localStorage.getItem("token");
   function handleSignup(e) {
     e.preventDefault();
     navigate("/Signup");
@@ -11,6 +12,11 @@ function Navbar() {
     e.preventDefault();
     navigate("/");
   }
+  function handleLogout(e) {
+    Logout();
+    navigate("/");
+  }
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -37,23 +43,35 @@ function Navbar() {
             </ul>
             {/* <!-- Left links --> */}
 
-            <div className="d-flex align-items-center">
-              <button
-                type="button"
-                // className="btn btn-link px-3 me-2"
-                className="btn btn-secondary me-3"
-                onClick={handleLogin}
-              >
-                Login
-              </button>
-              <button
-                type="button"
-                className="btn btn-secondary me-3"
-                onClick={handleSignup}
-              >
-                Register
-              </button>
-            </div>
+            {!isuserlogedin ? (
+              <div className="d-flex align-items-center">
+                <button
+                  type="button"
+                  // className="btn btn-link px-3 me-2"
+                  className="btn btn-secondary me-3"
+                  onClick={handleLogin}
+                >
+                  Login
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary me-3"
+                  onClick={handleSignup}
+                >
+                  Register
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-secondary me-3"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
           {/* <!-- Collapsible wrapper --> */}
         </div>

@@ -48,8 +48,10 @@ function Loginpage() {
       })
       .then((res) => {
         setresponse(res.data);
-        console.log(res.data);
-        navigate(`/Dashboard`);
+        if (res.data.status) {
+          localStorage.setItem("token", res.data.token);
+          navigate("/Dashboard");
+        }
       })
       .catch((err) => {
         console.log(err);

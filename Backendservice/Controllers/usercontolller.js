@@ -1,5 +1,7 @@
 const userModle = require("../Modle/usermodle");
+const mobileModle = require("../Modle/mobiles");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 let Controllers = {};
 
 Controllers.signup = async function (req, res) {
@@ -28,11 +30,17 @@ Controllers.login = async function (req, res) {
     if (user) {
       const comparison = await bcrypt.compare(data.password, user.password);
       if (comparison) {
+        const generatedtoken = jwt.sign({ email: data.email }, "chakradhar", {
+          expiresIn: "1h",
+          algorithm: "HS512",
+          issuer: "charan",
+        });
         res.status(200).send({
           username: user.username,
           msg: "login successfull",
           status: true,
           useremail: user.email,
+          token: generatedtoken,
         });
       } else {
         res.send({
@@ -48,6 +56,32 @@ Controllers.login = async function (req, res) {
     }
   } catch (err) {
     res.send(err);
+  }
+};
+
+Controllers.mobile = async function (req, res) {
+  let data = req.body;
+  try {
+    const result = mobileModle.create({
+      MobileName: data.mobilename,
+      Price: data.price,
+      Brand: data.brand,
+      Discription: data.discription,
+    });
+    res.send({
+      msg: "item added sucessfully",
+    });
+  } catch (err) {
+    res.send(err);
+  }
+};
+
+Controllers.getmobiles = async function (req, res) {
+  try {
+    const items = await mobileModle.find();
+    res.json({ items });
+  } catch (err) {
+    console.log(err);
   }
 };
 

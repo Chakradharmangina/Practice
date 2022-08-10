@@ -1,3 +1,16 @@
 .loginimg {
   height: 100%;
 }
+
+.dashboardcard {
+  display: inline-block;
+  margin: 10px 20px;
+}
+
+.dashboardcard:hover {
+  cursor: pointer;
+}
+
+.dashboardimg {
+  width: 15rem;
+}

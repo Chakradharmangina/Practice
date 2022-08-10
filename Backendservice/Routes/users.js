@@ -7,6 +7,10 @@ router.post("/signup", isuserexist, Controllers.signup);
 
 router.post("/login", Controllers.login);
 
+router.post("/addmobile", Controllers.mobile);
+
+router.post("/getmobiles", Controllers.getmobiles);
+
 async function isuserexist(req, res, next) {
   let useremail = req.body.email;
   const user = await userModle.findOne({ email: useremail });
