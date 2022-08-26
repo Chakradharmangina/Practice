@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { Logout } from "../Authentication/auth";
-function Navbar() {
+import "../../App.css";
+
+function Navbar(props) {
+  console.log("pp", props);
+  // const { username } = props.data;
   const navigate = useNavigate();
   let isuserlogedin = localStorage.getItem("token");
   function handleSignup(e) {
@@ -32,13 +36,12 @@ function Navbar() {
               style={{ marginTop: "-1px" }}
             />
           </Link>
-
           {/* <!-- Collapsible wrapper --> */}
           <div className="collapse navbar-collapse" id="navbarButtonsExample">
             {/* <!-- Left links --> */}
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <lable>Shop Online</lable>
+                <label>Shop Online</label>
               </li>
             </ul>
             {/* <!-- Left links --> */}
@@ -63,13 +66,31 @@ function Navbar() {
               </div>
             ) : (
               <div>
-                <button
-                  type="button"
-                  className="btn btn-secondary me-3"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
+                <div class="dropdown show">
+                  <a
+                    class="btn btn-outline-secondary  dropdown-toggle"
+                    href="#"
+                    role="button"
+                    id="dropdownMenuLink"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    Hello {props.username}
+                  </a>
+
+                  <div
+                    class="dropdown-menu "
+                    aria-labelledby="dropdownMenuLink"
+                  >
+                    <Link to="/Dashboard" class="dropdown-item">
+                      Profile
+                    </Link>
+                    <a class="dropdown-item" onClick={handleLogout}>
+                      Logout
+                    </a>
+                  </div>
+                </div>
               </div>
             )}
           </div>

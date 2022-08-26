@@ -1,7 +1,9 @@
 const userModle = require("../Modle/usermodle");
 const mobileModle = require("../Modle/mobiles");
+const tcsvmodle = require("../Modle/csvmodel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const fs = require("fs");
 let Controllers = {};
 
 Controllers.signup = async function (req, res) {
@@ -82,6 +84,39 @@ Controllers.getmobiles = async function (req, res) {
     res.json({ items });
   } catch (err) {
     console.log(err);
+  }
+};
+
+Controllers.userdetails = async function (req, res) {
+  let useremail = req.token.email;
+  try {
+    let user = await userModle.findOne({ email: useremail });
+    res.send(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+Controllers.csvdata = async function (req, res) {
+  try {
+    let data = req.body.csvdata;
+    await tcsvmodle.collection.insertMany(data);
+    res.send({ msg: "cvs data is inserted" });
+  } catch {
+    (err) => {
+      console.log(err);
+    };
+  }
+};
+
+Controllers.fetchdatacsv = async function (req, res) {
+  try {
+    let data = await tcsvmodle.find({});
+    res.json({ data });
+  } catch {
+    (err) => {
+      console.log(err);
+    };
   }
 };
 
